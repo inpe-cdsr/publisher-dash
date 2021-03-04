@@ -1,0 +1,2 @@
+class PublisherDashException(Exception):
+    pass

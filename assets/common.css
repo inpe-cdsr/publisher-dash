@@ -1,0 +1,23 @@
+body {
+    background-color: #111111;
+    font-size: 15px;
+}
+
+/* change the DataTable pagination component styles */
+.dash-table-container .previous-next-container {
+    color: white;
+}
+
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+    color: #acacac;
+}
+
+/* update the date range picker component */
+.DateRangePicker_picker {
+    z-index: 1000;
+}
+
+.dash-sk-circle {
+    width: 60px !important;
+    height: 60px !important;
+}
