@@ -39,6 +39,46 @@ information_data = [
 df_information = DataFrame(information_data, columns=['information', 'value'])
 
 
+satellites = [
+    {
+        'satellite': 'AMAZONIA1',
+        'sensors': ['WFI']
+    },
+    {
+        'satellite': 'CBERS4A',
+        'sensors': ['MUX', 'WFI', 'WPM']
+    },
+    {
+        'satellite': 'CBERS4',
+        'sensors': ['MUX', 'AWFI', 'PAN5M', 'PAN10M']
+    },
+    {
+        'satellite': 'CBERS2B',
+        'sensors': ['CCD', 'WFI', 'HRC']
+    },
+    {
+        'satellite': 'LANDSAT1',
+        'sensors': ['MSS']
+    },
+    {
+        'satellite': 'LANDSAT2',
+        'sensors': ['MSS']
+    },
+    {
+        'satellite': 'LANDSAT3',
+        'sensors': ['MSS']
+    },
+    {
+        'satellite': 'LANDSAT5',
+        'sensors': ['TM']
+    },
+    {
+        'satellite': 'LANDSAT7',
+        'sensors': ['ETM']
+    }
+]
+
+
 data_table = {
     'Key' : [
         'Satellite',
@@ -53,33 +93,22 @@ data_table = {
     ],
     'Value' : [
         dcc.Dropdown(
-            id='satellite',
+            id='publisher-table-satellite',
             options=[
-                {'label': 'AMAZONIA1', 'value': 'AMAZONIA1'},
-                {'label': 'CBERS2B', 'value': 'CBERS2B'},
-                {'label': 'CBERS4', 'value': 'CBERS4'},
-                {'label': 'CBERS4A', 'value': 'CBERS4A'},
-                {'label': 'LANDSAT1', 'value': 'LANDSAT1'},
-                {'label': 'LANDSAT2', 'value': 'LANDSAT2'},
-                {'label': 'LANDSAT3', 'value': 'LANDSAT3'},
-                {'label': 'LANDSAT5', 'value': 'LANDSAT5'},
-                {'label': 'LANDSAT7', 'value': 'LANDSAT7'},
+                {'label': s['satellite'], 'value': s['satellite']} \
+                    for s in satellites
             ],
-            value='CBERS2B',
+            value='CBERS4A',
             clearable=False
         ),
         dcc.Dropdown(
-            id='sensor',
-            options=[
-                {'label': 'All', 'value': 'All'},
-                {'label': 'WFI', 'value': 'WFI'},
-                {'label': 'MUX', 'value': 'MUX'}
-            ],
-            value='All',
+            id='publisher-table-sensor',
+            # options=[],  # this key is updated by callback
+            value='ALL',
             clearable=False
         ),
         dcc.DatePickerRange(
-            id='date-picker-range',
+            id='publisher-table-date-picker-range',
             min_date_allowed=date(2020, 6, 1),
             max_date_allowed=date(2020, 6, 30),
             initial_visible_month=date(2020, 6, 1),
@@ -89,7 +118,7 @@ data_table = {
         dcc.Input(id='path', placeholder='Path', type='number', value=1, min=1, max=999),
         dcc.Input(id='row', placeholder='Row', type='number', value=1, min=1, max=999),
         dcc.RadioItems(
-            id='geo_processing',
+            id='publisher-table-geo_processing',
             options=[
                 {'label': 'All', 'value': 'ALL'},
                 {'label': '2', 'value': '2'},
@@ -99,7 +128,7 @@ data_table = {
             labelStyle={'display': 'inline-block'}
         ),
         dcc.RadioItems(
-            id='radio_processing',
+            id='publisher-table-radio_processing',
             options=[
                 {'label': 'All', 'value': 'ALL'},
                 {'label': 'DN', 'value': 'DN'},
@@ -109,14 +138,14 @@ data_table = {
             labelStyle={'display': 'inline-block'}
         ),
         dcc.Dropdown(
-            id='action',
+            id='publisher-table-action',
             options=[
                 {'label': '/publish', 'value': 'publish'},
             ],
             value='publish',
             clearable=False
         ),
-        html.Button('Submit', id='submit_button')
+        html.Button('Submit', id='publisher-table-submit')
     ]
 }
 

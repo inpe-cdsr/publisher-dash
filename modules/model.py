@@ -55,7 +55,7 @@ class PostgreSQLConnection:
                     logger.warning('PostgreSQLConnection - Could not connect to database, trying to '
                                   f'connect again... [attempts: `{attempts}`]')
                     attempts += 1
-                    sleep(1)
+                    sleep(2)
                 except SQLAlchemyError as error:
                     logger.error(f'PostgreSQLConnection - An error occurred during query execution.')
                     logger.error(f'PostgreSQLConnection - error.code: {error.code} - error.args: {error.args}')
