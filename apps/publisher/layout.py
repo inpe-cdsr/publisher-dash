@@ -9,35 +9,11 @@ from pandas import DataFrame
 from apps.service import get_table_styles
 from modules.environment import PD_LOGGING_LEVEL
 from modules.logger import create_logger
-from modules.model import CDSRCatalogConnection, CDSROperationConnection
 from modules.utils import colors
 
 
 # create logger object
 logger = create_logger(__name__, level=PD_LOGGING_LEVEL)
-
-
-##################################################
-# get the dataframes from database
-##################################################
-# database connection
-db_catalog = CDSRCatalogConnection()
-db_operation = CDSROperationConnection()
-
-
-count_items = db_catalog.select_count_all_from_items()
-count_task_error = db_operation.select_count_all_from_task_error()
-
-logger.info(f'publisher.layout - count_items.head(): \n{count_items.head()}\n')
-logger.info(f'publisher.layout - count_task_error.head(): \n{count_task_error.head()}\n')
-
-
-information_data = [
-    ['Number of items', count_items['count']],
-    ['Number of task errors', count_task_error['count']]
-]
-df_information = DataFrame(information_data, columns=['information', 'value'])
-
 
 satellites = [
     {
@@ -77,7 +53,6 @@ satellites = [
         'sensors': ['ETM']
     }
 ]
-
 
 data_table = {
     'Key' : [
@@ -174,6 +149,7 @@ layout = html.Div([
     html.H3(children='Operation analysis', style={'textAlign': 'center', 'color': colors['text']}),
     # tables
     html.Div([
+        # left tables
         html.Div([
             # form
             html.Div([
@@ -196,17 +172,23 @@ layout = html.Div([
                 )
             ])
         ], style={'maxWidth': '450px', 'paddingRight': '50px'}),
+        # right tables
         html.Div([
             # title
             html.P(children='Information', style={'textAlign': 'center', 'color': colors['text']}),
             # table information
             DataTable(
-                id='publisher--table--information',
-                columns=[{"name": i, "id": i} for i in df_information.columns],
-                data=df_information.to_dict('records'),
+                id='publisher-table-information',
+                columns=[{"name": i, "id": i} for i in ['information', 'value']],
+                data=[],
                 fixed_rows={'headers': True, 'data': 0},
                 **get_table_styles()
+            ),
+            dcc.Interval(
+                id='publisher-table-information-interval',
+                interval=3000, # each 3 secs the table is updated
+                n_intervals=0
             )
-        ], style={'maxWidth': '400px'}),
+        ], style={'maxWidth': '350px'}),
     ], style={'width': '100%', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'})
 ])

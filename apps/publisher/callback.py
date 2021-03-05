@@ -7,12 +7,17 @@ from requests import get
 from app import app
 from modules.environment import PD_LOGGING_LEVEL, PD_PUBLISHER_SERVICE
 from modules.logger import create_logger
+from modules.model import CDSRCatalogConnection, CDSROperationConnection
 
 from apps.publisher.layout import layout, satellites
 
 
 # create logger object
 logger = create_logger(__name__, level=PD_LOGGING_LEVEL)
+
+# database connection
+db_catalog = CDSRCatalogConnection()
+db_operation = CDSROperationConnection()
 
 
 @app.callback(
@@ -36,22 +41,19 @@ def publisher__update_sensor_dropdown(satellite):
 
 
 @app.callback(
-    [
-        Output('publisher-table-label-request', 'children'),
-        Output('publisher-table-label-response', 'children'),
-    ],
+    [Output('publisher-table-label-request', 'children'),
+     Output('publisher-table-label-response', 'children')],
     [Input('publisher-table-button-submit', 'n_clicks')],
-    [
-        State('publisher-table-satellite', 'value'),
-        State('publisher-table-sensor', 'value'),
-        State('publisher-table-date-picker-range', 'start_date'),
-        State('publisher-table-date-picker-range', 'end_date'),
-        State('publisher-table-path', 'value'),
-        State('publisher-table-row', 'value'),
-        State('publisher-table-geo_processing', 'value'),
-        State('publisher-table-radio_processing', 'value'),
-        State('publisher-table-action', 'value')
-    ])
+    [State('publisher-table-satellite', 'value'),
+     State('publisher-table-sensor', 'value'),
+     State('publisher-table-date-picker-range', 'start_date'),
+     State('publisher-table-date-picker-range', 'end_date'),
+     State('publisher-table-path', 'value'),
+     State('publisher-table-row', 'value'),
+     State('publisher-table-geo_processing', 'value'),
+     State('publisher-table-radio_processing', 'value'),
+     State('publisher-table-action', 'value')]
+)
 def publisher__button_was_clicked(n_clicks, satellite, sensor, start_date, end_date,
                                   path, row, geo_processing, radio_processing, action):
 
@@ -110,3 +112,18 @@ def publisher__button_was_clicked(n_clicks, satellite, sensor, start_date, end_d
     logger.info(f'publisher__button_was_clicked - response_label: {response_label}')
 
     return request_label, response_label
+
+
+@app.callback(
+    Output('publisher-table-information', 'data'),
+    [Input('publisher-table-information-interval', 'n_intervals')]
+)
+def publisher__update_table_information(n_intervals):
+    # get information from the databases
+    count_items = db_catalog.select_count_all_from_items()
+    count_task_error = db_operation.select_count_all_from_task_error()
+
+    return [
+        {'information': 'Number of items', 'value': count_items['count'][0]},
+        {'information': 'Number of task errors', 'value': count_task_error['count'][0]}
+    ]

@@ -16,7 +16,8 @@ def get_table_styles():
         'style_as_list_view': True,
         'style_table': {
             'maxHeight': '390px',
-            'overflowY': 'scroll'
+            'overflowY': 'scroll',
+            'width': '100%'
         },
         'style_data_conditional': [
             {
