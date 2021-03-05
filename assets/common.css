@@ -21,3 +21,8 @@ body {
     width: 60px !important;
     height: 60px !important;
 }
+
+/* fix dropdown font color */
+.Select-menu-outer {
+    color: rgb(0, 0, 0);
+}
