@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 import dash_core_components as dcc
 import dash_html_components as html
@@ -109,15 +109,15 @@ data_table = {
         ),
         dcc.DatePickerRange(
             id='publisher-table-date-picker-range',
-            min_date_allowed=date(2020, 6, 1),
-            max_date_allowed=date(2020, 6, 30),
-            initial_visible_month=date(2020, 6, 1),
-            start_date=date(2020, 6, 5),
-            end_date=date(2020, 6, 14),
+            min_date_allowed=date(1975, 1, 1),
+            max_date_allowed=date.today() + timedelta(days=1),
+            initial_visible_month=date.today(),
+            start_date=date.today() - timedelta(weeks=4),
+            end_date=date.today(),
             display_format='DD/MM/YYYY'
         ),
-        dcc.Input(id='publisher-table-path', placeholder='Path', type='number', value=1, min=1, max=999),
-        dcc.Input(id='publisher-table-row', placeholder='Row', type='number', value=1, min=1, max=999),
+        dcc.Input(id='publisher-table-path', placeholder='Path', type='number', value='', min=1, max=999),
+        dcc.Input(id='publisher-table-row', placeholder='Row', type='number', value='', min=1, max=999),
         dcc.RadioItems(
             id='publisher-table-geo_processing',
             options=[

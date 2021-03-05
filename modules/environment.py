@@ -26,6 +26,6 @@ else:
 # PostgreSQL connection
 PGUSER = getenv('PGUSER', 'postgres')
 PGPASSWORD = getenv('PGPASSWORD', 'postgres')
-PGHOST = getenv('PGHOST', 'localhost')
-PGPORT = int(getenv('PGPORT', 6000))
+PGHOST = getenv('PGHOST', 'inpe_cdsr_postgis')
+PGPORT = int(getenv('PGPORT', 5432))
 PGDATABASE = getenv('PGDATABASE', 'cdsr_catalog_test')

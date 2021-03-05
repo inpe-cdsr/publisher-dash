@@ -72,9 +72,7 @@ def publisher__button_was_clicked(n_clicks, satellite, sensor, start_date, end_d
     query = {
         'satellite': satellite,
         'start_date': start_date,
-        'end_date': end_date,
-        'path': path,
-        'row': row
+        'end_date': end_date
     }
 
     if sensor != 'ALL':
@@ -85,6 +83,12 @@ def publisher__button_was_clicked(n_clicks, satellite, sensor, start_date, end_d
 
     if radio_processing != 'ALL':
         query['radio_processing'] = radio_processing
+
+    if path != '':
+        query['path'] = path
+
+    if row != '':
+        query['row'] = row
 
     url = PD_PUBLISHER_SERVICE
     if action == '/publish':
