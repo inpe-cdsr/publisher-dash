@@ -25,21 +25,7 @@ def publisher__update_sensor_dropdown(satellite):
         return []
 
     satellite_info = satellite_info[0]
-
     logger.info(f'publisher__update_sensor_dropdown - satellite_info: {satellite_info}')
 
-    # return [
-    #             {'label': 'All', 'value': 'All'},
-    #             {'label': 'WFI', 'value': 'WFI'},
-    #             {'label': 'MUX', 'value': 'MUX'},
-    #             {'label': 'ABC', 'value': 'ABC'}
-
-    #         ]
-
-    sensor_options = [{'label': 'All', 'value': 'ALL'}]
-
-    sensor_options += [
-        {'label': s, 'value': s} for s in satellite_info['sensors']
-    ]
-
-    return sensor_options
+    return [{'label': 'All', 'value': 'ALL'}] + \
+        [{'label': s, 'value': s} for s in satellite_info['sensors']]
