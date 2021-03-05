@@ -89,7 +89,7 @@ data_table = {
         'Geo. Processing',
         'Radio. Processing',
         'Action',
-        '',
+        ''
     ],
     'Value' : [
         dcc.Dropdown(
@@ -113,10 +113,11 @@ data_table = {
             max_date_allowed=date(2020, 6, 30),
             initial_visible_month=date(2020, 6, 1),
             start_date=date(2020, 6, 5),
-            end_date=date(2020, 6, 14)
+            end_date=date(2020, 6, 14),
+            display_format='DD/MM/YYYY'
         ),
-        dcc.Input(id='path', placeholder='Path', type='number', value=1, min=1, max=999),
-        dcc.Input(id='row', placeholder='Row', type='number', value=1, min=1, max=999),
+        dcc.Input(id='publisher-table-path', placeholder='Path', type='number', value=1, min=1, max=999),
+        dcc.Input(id='publisher-table-row', placeholder='Row', type='number', value=1, min=1, max=999),
         dcc.RadioItems(
             id='publisher-table-geo_processing',
             options=[
@@ -140,25 +141,27 @@ data_table = {
         dcc.Dropdown(
             id='publisher-table-action',
             options=[
-                {'label': '/publish', 'value': 'publish'},
+                {'label': '/publish', 'value': '/publish'},
             ],
-            value='publish',
+            value='/publish',
             clearable=False
         ),
-        html.Button('Submit', id='publisher-table-submit')
+        html.Button('Submit', id='publisher-table-button-submit', n_clicks=0)
     ]
 }
 
 
 def generate_table(df, max_rows=26):
     return html.Table(
-        # Header
-        # [ Tr([Th(col) for col in df.columns]) ] +
-        # Body
         [
-            html.Tr([
-                html.Td(df.iloc[i][col]) for col in df.columns
-            ]) for i in range(min(len(df), max_rows))
+            # Header
+            # html.Thead([ html.Tr([html.Th(col) for col in df.columns]) ]),
+            # Body
+            html.Tbody([
+                html.Tr([
+                    html.Td(df.iloc[i][col]) for col in df.columns
+                ]) for i in range(min(len(df), max_rows))
+            ])
         ],
         style={'color': colors['text']}
     )
@@ -166,26 +169,36 @@ def generate_table(df, max_rows=26):
 
 layout = html.Div([
     # title
-    html.H1(
-        children='publisher-dash',
-        style={'textAlign': 'center', 'color': colors['text']}
-    ),
+    html.H1(children='publisher-dash', style={'textAlign': 'center', 'color': colors['text']}),
     # subtitle
-    html.H3(
-        children='Operation analysis',
-        style={'textAlign': 'center', 'color': colors['text']}
-    ),
-
+    html.H3(children='Operation analysis', style={'textAlign': 'center', 'color': colors['text']}),
+    # tables
     html.Div([
         html.Div([
-            generate_table(DataFrame(data_table)),
-        ], style={'padding-right': '50px'}),
+            # form
+            html.Div([
+                html.P(children='Form', style={'textAlign': 'center', 'color': colors['text']}),
+                generate_table(DataFrame(data_table)),
+            ], style={'paddingBottom': '20px'}),
+            # table request
+            html.Div([
+                html.P(children='Result', style={'textAlign': 'center', 'color': colors['text']}),
+                html.Table(
+                    html.Tbody([
+                        html.Tr([
+                            html.Td('Request'), html.Td(html.Label(id='publisher-table-label-request'))
+                        ]),
+                        html.Tr([
+                            html.Td('Response'), html.Td(html.Label(id='publisher-table-label-response'))
+                        ])
+                    ]),
+                    style={'width': '100%', 'color': colors['text']}
+                )
+            ])
+        ], style={'maxWidth': '450px', 'paddingRight': '50px'}),
         html.Div([
             # title
-            html.P(
-                children='Table: Information',
-                style={'textAlign': 'center', 'color': colors['text']}
-            ),
+            html.P(children='Information', style={'textAlign': 'center', 'color': colors['text']}),
             # table information
             DataTable(
                 id='publisher--table--information',
@@ -194,6 +207,6 @@ layout = html.Div([
                 fixed_rows={'headers': True, 'data': 0},
                 **get_table_styles()
             )
-        ]),
-    ], style={'width': '100%', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+        ], style={'maxWidth': '400px'}),
+    ], style={'width': '100%', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'})
 ])
