@@ -12,7 +12,7 @@ def str2bool(value):
 # Publisher Dash environment variables
 PD_DEBUG_MODE = str2bool(getenv('PD_DEBUG_MODE', 'False'))
 PD_LOGGING_LEVEL = getenv('PD_LOGGING_LEVEL', 'INFO')
-PD_PUBLISHER_SERVICE = getenv('PD_PUBLISHER_HOST', 'inpe_cdsr_publisher:5000')
+PD_PUBLISHER_SERVICE = getenv('PD_PUBLISHER_HOST', 'http://inpe_cdsr_publisher:5000')
 
 
 # if the inserted logger level already exists, then select it,

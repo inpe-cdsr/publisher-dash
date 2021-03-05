@@ -1,7 +1,8 @@
 from urllib.parse import urlencode
 
 from dash.dependencies import Input, Output, State
-# from requests import get
+import dash_html_components as html
+from requests import get
 
 from app import app
 from modules.environment import PD_LOGGING_LEVEL, PD_PUBLISHER_SERVICE
@@ -92,13 +93,16 @@ def publisher__button_was_clicked(n_clicks, satellite, sensor, start_date, end_d
     logger.info(f'publisher__button_was_clicked - url: {url}')
     logger.info(f'publisher__button_was_clicked - query: {query}')
 
-    # result = get(url, params=query)
+    # it calls publisher service
+    result = get(url, params=query)
 
-    # logger.info(f'publisher__button_was_clicked - result: {result}')
-    # logger.info(f'publisher__button_was_clicked - result.text: {result.text}')
+    request_label = url + '?' + urlencode(query)
+    response_label = [
+        html.Label(f'status_code: {result.status_code}'),
+        html.Label(f'text: {result.text}')
+    ]
 
-    # construct query string and add it to the url
-    url += '?' + urlencode(query)
+    logger.info(f'publisher__button_was_clicked - request_label: {request_label}')
+    logger.info(f'publisher__button_was_clicked - response_label: {response_label}')
 
-    return url, f'n_clicks: {n_clicks}'
-
+    return request_label, response_label

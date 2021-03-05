@@ -186,10 +186,10 @@ layout = html.Div([
                 html.Table(
                     html.Tbody([
                         html.Tr([
-                            html.Td('Request'), html.Td(html.Label(id='publisher-table-label-request'))
+                            html.Td('Request'), html.Td(id='publisher-table-label-request')
                         ]),
                         html.Tr([
-                            html.Td('Response'), html.Td(html.Label(id='publisher-table-label-response'))
+                            html.Td('Response'), html.Td(id='publisher-table-label-response')
                         ])
                     ]),
                     style={'width': '100%', 'color': colors['text']}
