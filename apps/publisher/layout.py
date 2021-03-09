@@ -67,6 +67,7 @@ data_table = {
         ''
     ],
     'Value' : [
+        # satellite
         dcc.Dropdown(
             id='publisher-table-satellite',
             options=[
@@ -76,12 +77,14 @@ data_table = {
             value='CBERS4A',
             clearable=False
         ),
+        # sensor
         dcc.Dropdown(
             id='publisher-table-sensor',
             # options=[],  # this key is updated by callback
             value='ALL',
             clearable=False
         ),
+        # date range
         dcc.DatePickerRange(
             id='publisher-table-date-picker-range',
             min_date_allowed=date(1975, 1, 1),
@@ -91,18 +94,23 @@ data_table = {
             end_date=date.today(),
             display_format='DD/MM/YYYY'
         ),
+        # path/row
         dcc.Input(id='publisher-table-path', placeholder='Path', type='number', value='', min=1, max=999),
         dcc.Input(id='publisher-table-row', placeholder='Row', type='number', value='', min=1, max=999),
+        # geo processing
         dcc.RadioItems(
             id='publisher-table-geo_processing',
             options=[
                 {'label': 'All', 'value': 'ALL'},
                 {'label': '2', 'value': '2'},
+                {'label': '2B', 'value': '2B'},
+                {'label': '3', 'value': '3'},
                 {'label': '4', 'value': '4'}
             ],
             value='ALL',
             labelStyle={'display': 'inline-block'}
         ),
+        # radio processing
         dcc.RadioItems(
             id='publisher-table-radio_processing',
             options=[
@@ -113,6 +121,7 @@ data_table = {
             value='ALL',
             labelStyle={'display': 'inline-block'}
         ),
+        # action
         dcc.Dropdown(
             id='publisher-table-action',
             options=[
@@ -146,7 +155,7 @@ layout = html.Div([
     # title
     html.H1(children='publisher-dash', style={'textAlign': 'center', 'color': colors['text']}),
     # subtitle
-    html.H3(children='Operation analysis', style={'textAlign': 'center', 'color': colors['text']}),
+    # html.H3(children='Operation analysis', style={'textAlign': 'center', 'color': colors['text']}),
     # tables
     html.Div([
         # left tables
