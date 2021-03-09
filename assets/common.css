@@ -26,3 +26,8 @@ body {
 .Select-menu-outer {
     color: rgb(0, 0, 0);
 }
+
+/* fix tables padding */
+th:not(.CalendarDay), td:not(.CalendarDay) {
+    padding: 5px 10px;
+}

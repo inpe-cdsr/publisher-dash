@@ -15,6 +15,7 @@ from modules.utils import colors
 # create logger object
 logger = create_logger(__name__, level=PD_LOGGING_LEVEL)
 
+
 satellites = [
     {
         'satellite': 'AMAZONIA1',
@@ -54,101 +55,98 @@ satellites = [
     }
 ]
 
-data_table = {
-    'Key' : [
-        'Satellite',
-        'Sensor',
-        'Date',
-        'Path',
-        'Row',
-        'Geo. Processing',
-        'Radio. Processing',
-        'Action',
-        ''
-    ],
-    'Value' : [
-        # satellite
-        dcc.Dropdown(
-            id='publisher-table-satellite',
-            options=[
-                {'label': s['satellite'], 'value': s['satellite']} \
-                    for s in satellites
-            ],
-            value='CBERS4A',
-            clearable=False
-        ),
-        # sensor
-        dcc.Dropdown(
-            id='publisher-table-sensor',
-            # options=[],  # this key is updated by callback
-            value='ALL',
-            clearable=False
-        ),
-        # date range
-        dcc.DatePickerRange(
-            id='publisher-table-date-picker-range',
-            min_date_allowed=date(1970, 1, 1),
-            max_date_allowed=date.today() + timedelta(days=1),
-            initial_visible_month=date.today(),
-            start_date=date.today() - timedelta(weeks=4),
-            end_date=date.today(),
-            display_format='DD/MM/YYYY'
-        ),
-        # path/row
-        dcc.Input(id='publisher-table-path', placeholder='Path', type='number', value='', min=1, max=999),
-        dcc.Input(id='publisher-table-row', placeholder='Row', type='number', value='', min=1, max=999),
-        # geo processing
-        dcc.RadioItems(
-            id='publisher-table-geo_processing',
-            options=[
-                {'label': 'All', 'value': 'ALL'},
-                {'label': '2', 'value': '2'},
-                {'label': '2B', 'value': '2B'},
-                {'label': '3', 'value': '3'},
-                {'label': '4', 'value': '4'}
-            ],
-            value='ALL',
-            labelStyle={'display': 'inline-block'}
-        ),
-        # radio processing
-        dcc.RadioItems(
-            id='publisher-table-radio_processing',
-            options=[
-                {'label': 'All', 'value': 'ALL'},
-                {'label': 'DN', 'value': 'DN'},
-                {'label': 'SR', 'value': 'SR'},
-            ],
-            value='ALL',
-            labelStyle={'display': 'inline-block'}
-        ),
-        # action
-        dcc.Dropdown(
-            id='publisher-table-action',
-            options=[
-                {'label': '/publish', 'value': '/publish'},
-            ],
-            value='/publish',
-            clearable=False
-        ),
-        html.Button('Submit', id='publisher-table-button-submit', n_clicks=0)
-    ]
-}
 
+form = html.Table([
+    # Header
+    # html.Thead([ html.Tr([html.Th(col) for col in df.columns]) ]),
+    # Body
+    html.Tbody([
+        html.Tr([
+            html.Td('Satellite'),
+            html.Td(dcc.Dropdown(
+                id='publisher-table-satellite',
+                options=[
+                    {'label': s['satellite'], 'value': s['satellite']} \
+                        for s in satellites
+                ],
+                value='CBERS4A',
+                clearable=False
+            )),
 
-def generate_table(df, max_rows=26):
-    return html.Table(
-        [
-            # Header
-            # html.Thead([ html.Tr([html.Th(col) for col in df.columns]) ]),
-            # Body
-            html.Tbody([
-                html.Tr([
-                    html.Td(df.iloc[i][col]) for col in df.columns
-                ]) for i in range(min(len(df), max_rows))
-            ])
-        ],
-        style={'color': colors['text']}
-    )
+            html.Td('Sensor'),
+            html.Td(dcc.Dropdown(
+                id='publisher-table-sensor',
+                # options=[],  # this key is updated by callback
+                value='ALL',
+                clearable=False
+            )),
+
+            html.Td('Action'),
+            html.Td(dcc.Dropdown(
+                id='publisher-table-action',
+                options=[
+                    {'label': '/publish', 'value': '/publish'},
+                ],
+                value='/publish',
+                clearable=False
+            ))
+        ]),
+        html.Tr([
+            html.Td('Date'),
+            html.Td(dcc.DatePickerRange(
+                id='publisher-table-date-picker-range',
+                min_date_allowed=date(1970, 1, 1),
+                max_date_allowed=date.today() + timedelta(days=1),
+                initial_visible_month=date.today(),
+                start_date=date.today() - timedelta(weeks=4),
+                end_date=date.today(),
+                display_format='DD/MM/YYYY'
+            )),
+
+            html.Td('Path'),
+            html.Td(dcc.Input(
+                id='publisher-table-path', placeholder='Path', type='number', value='', min=1, max=999
+            )),
+
+            html.Td('Row'),
+            html.Td(dcc.Input(
+                id='publisher-table-row', placeholder='Row', type='number', value='', min=1, max=999
+            )),
+        ]),
+        html.Tr([
+            html.Td('Geo. processing'),
+            html.Td(dcc.RadioItems(
+                id='publisher-table-geo_processing',
+                options=[
+                    {'label': 'All', 'value': 'ALL'},
+                    {'label': '2', 'value': '2'},
+                    {'label': '2B', 'value': '2B'},
+                    {'label': '3', 'value': '3'},
+                    {'label': '4', 'value': '4'}
+                ],
+                value='ALL',
+                labelStyle={'display': 'inline-block'}
+            )),
+
+            html.Td('Radio. processing'),
+            html.Td(dcc.RadioItems(
+                id='publisher-table-radio_processing',
+                options=[
+                    {'label': 'All', 'value': 'ALL'},
+                    {'label': 'DN', 'value': 'DN'},
+                    {'label': 'SR', 'value': 'SR'},
+                ],
+                value='ALL',
+                labelStyle={'display': 'inline-block'}
+            )),
+
+            html.Td(''),
+            html.Td(
+                html.Button('Submit', id='publisher-table-button-submit', n_clicks=0)
+            )
+        ])
+    ])
+], style={'width': '100%', 'color': colors['text']})
 
 
 layout = html.Div([
@@ -163,7 +161,7 @@ layout = html.Div([
             # form
             html.Div([
                 html.P(children='Form', style={'textAlign': 'center', 'color': colors['text']}),
-                generate_table(DataFrame(data_table)),
+                form
             ], style={'display': 'grid', 'justifyContent': 'center', 'paddingBottom': '20px'}),
             # table request
             html.Div([
@@ -180,7 +178,7 @@ layout = html.Div([
                     style={'width': '100%', 'color': colors['text']}
                 )
             ])
-        ]),
+        ], style={'paddingBottom': '20px'}),
         # tables
         html.Div([
             html.Div([
@@ -196,11 +194,11 @@ layout = html.Div([
                         fixed_rows={'headers': True, 'data': 0},
                         **get_table_styles()
                     )
-                ]),
+                ], style={'paddingBottom': '20px'}),
                 # table items
                 html.Div([
                     # title
-                    html.P(children='Items', style={'textAlign': 'center', 'color': colors['text'], 'paddingTop': '10px'}),
+                    html.P(children='Items', style={'textAlign': 'center', 'color': colors['text']}),
                     # table items
                     DataTable(
                         id='publisher-table-items',
@@ -215,11 +213,11 @@ layout = html.Div([
                         filter_action='native',
                         page_size=10,
                     )
-                ]),
+                ], style={'paddingBottom': '20px'}),
                 # table task error
                 html.Div([
                     # title
-                    html.P(children='Task error', style={'textAlign': 'center', 'color': colors['text'], 'paddingTop': '30px'}),
+                    html.P(children='Task error', style={'textAlign': 'center', 'color': colors['text']}),
                     # table task error
                     DataTable(
                         id='publisher-table-task-error',
