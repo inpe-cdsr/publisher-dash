@@ -156,15 +156,16 @@ layout = html.Div([
     html.H1(children='publisher-dash', style={'textAlign': 'center', 'color': colors['text']}),
     # subtitle
     # html.H3(children='Operation analysis', style={'textAlign': 'center', 'color': colors['text']}),
-    # tables
+
+
     html.Div([
-        # left tables
+        # forms
         html.Div([
             # form
             html.Div([
                 html.P(children='Form', style={'textAlign': 'center', 'color': colors['text']}),
                 generate_table(DataFrame(data_table)),
-            ], style={'paddingBottom': '20px'}),
+            ], style={'display': 'grid', 'justifyContent': 'center', 'paddingBottom': '20px'}),
             # table request
             html.Div([
                 html.P(children='Result', style={'textAlign': 'center', 'color': colors['text']}),
@@ -180,54 +181,65 @@ layout = html.Div([
                     style={'width': '100%', 'color': colors['text']}
                 )
             ])
-        ], style={'maxWidth': '450px', 'paddingRight': '50px'}),
-        # right tables
+        ]),
+        # tables
         html.Div([
-            # title
-            html.P(children='Information', style={'textAlign': 'center', 'color': colors['text']}),
-            # table information
-            DataTable(
-                id='publisher-table-information',
-                columns=[{"name": i, "id": i} for i in ['information', 'value']],
-                data=[],
-                fixed_rows={'headers': True, 'data': 0},
-                **get_table_styles()
-            ),
-            # title
-            html.P(children='Items', style={'textAlign': 'center', 'color': colors['text'], 'paddingTop': '10px'}),
-            # table items
-            DataTable(
-                id='publisher-table-items',
-                columns=[{"name": i, "id": i} for i in (
-                    'name', 'collection_id', 'start_date', 'end_date', 'metadata', 'assets'
-                )],
-                data=[],
-                fixed_rows={ 'headers': True, 'data': 0 },
-                **get_table_styles(),
-                sort_action='native',
-                sort_mode='multi',
-                filter_action='native',
-                page_size=10,
-            ),
-            # title
-            html.P(children='Task error', style={'textAlign': 'center', 'color': colors['text'], 'paddingTop': '30px'}),
-            # table task error
-            DataTable(
-                id='publisher-table-task-error',
-                columns=[{"name": i, "id": i} for i in ('id', 'message', 'metadata')],
-                data=[],
-                fixed_rows={ 'headers': True, 'data': 0 },
-                **get_table_styles(),
-                sort_action='native',
-                sort_mode='multi',
-                filter_action='native',
-                page_size=10,
-            ),
-            dcc.Interval(
-                id='publisher-interval-update-tables',
-                interval=3000, # each 3 secs the table is updated
-                n_intervals=0
-            )
-        ], style={'maxWidth': '350px'}),
-    ], style={'width': '100%', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'})
+            html.Div([
+                # table information
+                html.Div([
+                    # title
+                    html.P(children='Information', style={'textAlign': 'center', 'color': colors['text']}),
+                    # table information
+                    DataTable(
+                        id='publisher-table-information',
+                        columns=[{"name": i, "id": i} for i in ['information', 'value']],
+                        data=[],
+                        fixed_rows={'headers': True, 'data': 0},
+                        **get_table_styles()
+                    )
+                ]),
+                # table items
+                html.Div([
+                    # title
+                    html.P(children='Items', style={'textAlign': 'center', 'color': colors['text'], 'paddingTop': '10px'}),
+                    # table items
+                    DataTable(
+                        id='publisher-table-items',
+                        columns=[{"name": i, "id": i} for i in (
+                            'name', 'collection_id', 'start_date', 'end_date', 'metadata', 'assets'
+                        )],
+                        data=[],
+                        fixed_rows={ 'headers': True, 'data': 0 },
+                        **get_table_styles(),
+                        sort_action='native',
+                        sort_mode='multi',
+                        filter_action='native',
+                        page_size=10,
+                    )
+                ]),
+                # table task error
+                html.Div([
+                    # title
+                    html.P(children='Task error', style={'textAlign': 'center', 'color': colors['text'], 'paddingTop': '30px'}),
+                    # table task error
+                    DataTable(
+                        id='publisher-table-task-error',
+                        columns=[{"name": i, "id": i} for i in ('id', 'message', 'metadata')],
+                        data=[],
+                        fixed_rows={ 'headers': True, 'data': 0 },
+                        **get_table_styles(),
+                        sort_action='native',
+                        sort_mode='multi',
+                        filter_action='native',
+                        page_size=10,
+                    )
+                ]),
+                dcc.Interval(
+                    id='publisher-interval-update-tables',
+                    interval=3000, # each 3 secs the table is updated
+                    n_intervals=0
+                )
+            ], style={'maxWidth': '900px'}),
+        ], style={'display': 'grid', 'justifyContent': 'center'})
+    ], style={'width': '100%', 'alignItems': 'center', 'display': 'grid', 'justifyContent': 'center'})
 ])
