@@ -1,10 +1,10 @@
-# from pandas import set_option
+from pandas import set_option
 
 
 # display a larger dataframe on the console
-# set_option('display.max_rows', 500)
-# set_option('display.max_columns', 500)
-# set_option('display.width', 1000)
+set_option('display.max_rows', 500)
+set_option('display.max_columns', 500)
+set_option('display.width', 1000)
 
 
 ##################################################

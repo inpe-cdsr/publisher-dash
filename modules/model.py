@@ -101,7 +101,7 @@ class CDSRCatalogConnection(PostgreSQLConnection):
 
     def select_from_items(self):
         result = self.execute('SELECT name, collection_id, start_date::timestamp, '
-                              'end_date::timestamp, assets, metadata, geom, min_convex_hull '
+                              'end_date::timestamp, metadata, assets '
                               'FROM bdc.items ORDER BY name;')
 
         result['assets'] = result['assets'].astype('str')
@@ -122,7 +122,11 @@ class CDSROperationConnection(PostgreSQLConnection):
         self._create_engine()
 
     def select_from_task_error(self):
-        return self.execute('SELECT * FROM task_error ORDER BY message;')
+        result = self.execute('SELECT id, message, metadata FROM task_error ORDER BY message;')
+
+        result['metadata'] = result['metadata'].astype('str')
+
+        return result
 
     def select_count_all_from_task_error(self):
         return self.execute('SELECT COUNT(*) FROM task_error;')
