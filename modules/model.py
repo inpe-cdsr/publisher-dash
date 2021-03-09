@@ -96,9 +96,6 @@ class CDSRCatalogConnection(PostgreSQLConnection):
     def select_from_collections(self):
         return self.execute('SELECT * FROM bdc.collections ORDER BY name;')
 
-    def select_count_all_from_collections(self):
-        return self.execute('SELECT COUNT(*) FROM bdc.collections;')
-
     def select_from_items(self):
         result = self.execute('SELECT name, collection_id, start_date::timestamp, '
                               'end_date::timestamp, metadata, assets '
@@ -108,9 +105,6 @@ class CDSRCatalogConnection(PostgreSQLConnection):
         result['metadata'] = result['metadata'].astype('str')
 
         return result
-
-    def select_count_all_from_items(self):
-        return self.execute('SELECT COUNT(*) FROM bdc.items;')
 
 
 class CDSROperationConnection(PostgreSQLConnection):
@@ -127,6 +121,3 @@ class CDSROperationConnection(PostgreSQLConnection):
         result['metadata'] = result['metadata'].astype('str')
 
         return result
-
-    def select_count_all_from_task_error(self):
-        return self.execute('SELECT COUNT(*) FROM task_error;')

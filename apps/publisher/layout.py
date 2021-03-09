@@ -87,7 +87,7 @@ data_table = {
         # date range
         dcc.DatePickerRange(
             id='publisher-table-date-picker-range',
-            min_date_allowed=date(1975, 1, 1),
+            min_date_allowed=date(1970, 1, 1),
             max_date_allowed=date.today() + timedelta(days=1),
             initial_visible_month=date.today(),
             start_date=date.today() - timedelta(weeks=4),
@@ -156,8 +156,7 @@ layout = html.Div([
     html.H1(children='publisher-dash', style={'textAlign': 'center', 'color': colors['text']}),
     # subtitle
     # html.H3(children='Operation analysis', style={'textAlign': 'center', 'color': colors['text']}),
-
-
+    # content
     html.Div([
         # forms
         html.Div([

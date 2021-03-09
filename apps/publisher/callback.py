@@ -122,14 +122,12 @@ def publisher__button_was_clicked(n_clicks, satellite, sensor, start_date, end_d
 )
 def publisher__update_tables(n_intervals):
     # get information from the databases
-    count_items = db_catalog.select_count_all_from_items()
-    count_task_error = db_operation.select_count_all_from_task_error()
     items = db_catalog.select_from_items()
     task_errors = db_operation.select_from_task_error()
 
     table_information = [
-        {'information': 'Number of items', 'value': count_items['count'][0]},
-        {'information': 'Number of task errors', 'value': count_task_error['count'][0]}
+        {'information': 'Number of items', 'value': len(items.index)},
+        {'information': 'Number of task errors', 'value': len(task_errors.index)}
     ]
 
     return table_information, items.to_dict('records'), task_errors.to_dict('records')
